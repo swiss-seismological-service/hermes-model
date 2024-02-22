@@ -4,6 +4,8 @@ src/*
 *.db
 test.py
 
+/doc/build
+
 # Distribution / packaging
 .Python
 build/

@@ -12,8 +12,8 @@ class GeometryExtent(BaseModel):
 class ModelInput(BaseModel):
     forecast_start: datetime
     forecast_end: datetime
-    injection_well: dict | str | None = None
-    injection_plan: dict | str | None = None
+    injection_well: list[dict] | None = None
+    injection_plan: dict | None = None
     geometry: GeometryExtent
     seismic_catalog: str
     model_parameters: dict

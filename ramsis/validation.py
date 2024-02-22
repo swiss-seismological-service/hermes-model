@@ -21,14 +21,16 @@ def validate_entrypoint(func):
 
         # check if hydraulics are in the right format
         try:
-            for well in model_input.injection_well:
-                BoreholeHydraulics(well)
+            if model_input.injection_well is not None:
+                for well in model_input.injection_well:
+                    BoreholeHydraulics(well)
         except BaseException:
             raise ValueError("Invalid format for injection well, "
                              "please use valid hydjson.")
 
         try:
-            BoreholeHydraulics(model_input.injection_plan)
+            if model_input.injection_plan is not None:
+                BoreholeHydraulics(model_input.injection_plan)
         except BaseException:
             raise ValueError("Invalid format for injection plan, "
                              "please use valid hydjson.")

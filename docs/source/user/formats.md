@@ -23,7 +23,7 @@ forecast_end: datetime.datetime
 Date and time until when the forecast should be made.
 
 ```
-injection_well: str | dict # HYDJSON format
+injection_well: [dict] # HYDJSON format
 ```
 A list of dictionaries in the HYDJSON format, containing the history of injections into the well.
 

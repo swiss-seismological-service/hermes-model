@@ -29,12 +29,44 @@ The entrypoint of the model should be a simple python function, that takes a dic
 
 ```python	
 def entrypoint(input: dict) -> list:
-    # Your model code here
+    # Call and execute your model here.
     return output
 ```
 
+## Validation
+If you would like to have some kind of validation of the input and output of your entrypoint, you can install this package as described above.
+
+The changes to the entrypoint are minimal:
+
+```python	
+from ramsis import validate_entrypoint, ModelInput
+
+@validate_entrypoint(induced=True)
+def entrypoint(model_input: ModelInput):
+    # Call and execute your model here.
+    return output
+```
+
+The `validate_entrypoint` decorator will validate the input and output of the entrypoint, and raise an error if the input or output is not valid. The `induced` parameter is optional, and defaults to `False`. If set to `True` the input fields `injection_well` and `injection_plan` will be validated as well.
+
 ## Input Format
-The input dictionary has the following fields with the respective types:
+The input dictionary has the following fields:
+```
+model_input = {
+        'forecast_start': 'datetime'
+        'forecast_end': 'datetime',
+        'injection_well': '[hydjson]',
+        'injection_plan': 'hydjson',
+        'geometry': {
+            'bounding_polygon': 'wkt',
+            'altitude_min': 'float',
+            'altitude_max': 'float'
+        }
+        'seismic_catalog': 'quakeml',
+        'model_parameters': 'dict'
+    }
+```
+Following a complete description of the input fields:
 
 ```
 forecast_start: datetime.datetime
@@ -114,9 +146,6 @@ It is possible to return multiple realizations of catalogs for one timestep. In 
 4   2020-11-24 15:35:07.995789  8.474372  46.509814  1261.102992      -2.94        1
 ```
 
-
-
-
 ### GRRateGrid
 If using a grid of Gutenberg-Richter rates, the returned object should have at least the following columns:
 ```
@@ -135,4 +164,3 @@ Similar to the catalog, `grid_id` can be used to return probabilistic forecast, 
 2  8.472518       8.476478     46.508451     46.511185  1121.434  1421.434    -26.1 -5.3  2.1 -2.91       2
 3  8.472518       8.476478     46.508451     46.511185  1121.434  1421.434    -26.1 -5.3  2.0 -2.91       3
 ```
-

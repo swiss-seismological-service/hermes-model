@@ -1,7 +1,13 @@
 from functools import wraps
 
 import pandas as pd
-from hydws.parser import BoreholeHydraulics
+
+try:
+    from hydws.parser import BoreholeHydraulics
+except ImportError:
+    _hydraulics_available = False
+else:
+    _hydraulics_available = True
 from seismostats import Catalog, GRRateGrid
 from seismostats.utils import _check_required_cols
 from shapely import wkt
@@ -21,6 +27,11 @@ def validate_entrypoint(_func=None, *, induced=False):
             model_input = ModelInput(**args[0])
 
             if induced:
+                if not _hydraulics_available:
+                    raise ValueError(
+                        "HYDWS-Client is not installed, "
+                        "please install this package with [hydws] extras "
+                        "to induced seismicity features.")
                 # check if hydraulics are in the right format
                 try:
                     if model_input.injection_well is None:

@@ -12,7 +12,7 @@ from seismostats import Catalog, GRRateGrid
 from seismostats.utils import _check_required_cols
 from shapely import wkt
 
-from ramsis.schemas import ModelInput
+from ramsis_model.schemas import ModelInput
 
 
 def validate_entrypoint(_func=None, *, induced=False):

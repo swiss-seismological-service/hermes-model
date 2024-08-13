@@ -3,19 +3,19 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
 
-class GeometryExtent(BaseModel):
-    bounding_polygon: str
-    altitude_min: float
-    altitude_max: float
-
-
 class ModelInput(BaseModel):
     forecast_start: datetime
     forecast_end: datetime
-    injection_well: list[dict | None] | None = None
+
+    injection_observation: list[dict | None] | None = None
     injection_plan: dict | None = None
-    geometry: GeometryExtent
-    seismic_catalog: str
+
+    seismic_observation: str
+
+    bounding_polygon: str
+    depth_min: float
+    depth_max: float
+
     model_parameters: dict
 
     model_config = ConfigDict(

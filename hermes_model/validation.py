@@ -12,7 +12,7 @@ from seismostats import Catalog, GRRateGrid
 from seismostats.utils import _check_required_cols
 from shapely import wkt
 
-from ramsis_model.schemas import ModelInput
+from hermes_model.schemas import ModelInput
 
 
 def validate_entrypoint(_func=None, *, induced=False):
@@ -34,9 +34,9 @@ def validate_entrypoint(_func=None, *, induced=False):
                         "to induced seismicity features.")
                 # check if hydraulics are in the right format
                 try:
-                    if model_input.injection_well is None:
+                    if model_input.injection_observation is None:
                         raise Exception
-                    for well in model_input.injection_well:
+                    for well in model_input.injection_observation:
                         if well is None:
                             raise Exception
                         BoreholeHydraulics(well)
@@ -53,13 +53,13 @@ def validate_entrypoint(_func=None, *, induced=False):
                                      "please use valid hydjson.")
 
             try:
-                Catalog.from_quakeml(model_input.seismic_catalog)
+                Catalog.from_quakeml(model_input.seismic_observation)
             except BaseException:
                 raise ValueError("Invalid format for seismic catalog, "
                                  "please use valid quakeml.")
 
             try:
-                wkt.loads(model_input.geometry.bounding_polygon)
+                wkt.loads(model_input.bounding_polygon)
             except BaseException:
                 raise ValueError("Invalid format for bounding polygon, "
                                  "please use valid WKT.")

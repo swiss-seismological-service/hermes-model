@@ -10,13 +10,13 @@ class ModelInput(BaseModel):
     injection_observation: list[dict | None] | None = None
     injection_plan: dict | None = None
 
-    seismic_observation: str
+    seismicity_observation: str
 
-    bounding_polygon: str
-    depth_min: float
-    depth_max: float
+    bounding_polygon: str | None = None
+    depth_min: float | None = None
+    depth_max: float | None = None
 
-    model_parameters: dict
+    model_parameters: dict = {}
 
     model_config = ConfigDict(
         protected_namespaces=()

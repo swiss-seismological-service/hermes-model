@@ -1,7 +1,7 @@
 # Getting Started
 
 ## Entrypoint
-All you need to in order to make your model compatible is to define an entry point, a simple function, for your model. With a predefined format for input and output from this entrypoint, RAMSIS is then able to execute your model and store the results in the database using that funcion.
+All you need to in order to make your model compatible is to define an entry point, a simple function, for your model. With a predefined format for input and output from this entrypoint, hermes is then able to execute your model and store the results in the database using that funcion.
 
 ```python	
 def entrypoint(input: dict) -> list:
@@ -10,11 +10,11 @@ def entrypoint(input: dict) -> list:
 ```
 
 ## Usage
-The description of the formats used for the input and output of the entrypoint can be found in the [input](#input-format) and [output](#output-format) format sections. If you want, you can stop there, without installation of this package, as RT-RAMSIS doesn't need anything else. If you would like to have some kind of validation of the input and output of your entrypoint, you can [install](#installation) this package and read the [validation](#validation) section.
+The description of the formats used for the input and output of the entrypoint can be found in the [input](#input-format) and [output](#output-format) format sections. If you want, you can stop there, without installation of this package, as hermes doesn't need anything else. If you would like to have some kind of validation of the input and output of your entrypoint, you can [install](#installation) this package and read the [validation](#validation) section.
 
 # Input and Output Formats
 
-The `validate_entrypoint` decorator will validate the input and output of the entrypoint, and raise an error if the input or output is not valid. The `induced` parameter is optional, and defaults to `False`. If set to `True` the input fields `injection_well` and `injection_plan` will be validated as well.
+The `validate_entrypoint` decorator will validate the input and output of the entrypoint, and raise an error if the input or output is not valid. The `induced` parameter is optional, and defaults to `False`. If set to `True` the input fields `injection_observation` and `injection_plan` will be validated as well.
 
 ## Input Format
 The input dictionary has the following fields:
@@ -22,14 +22,12 @@ The input dictionary has the following fields:
 model_input = {
         'forecast_start': 'datetime'
         'forecast_end': 'datetime',
-        'injection_well': 'list[hydjson]',
+        'injection_observation': 'list[hydjson]',
         'injection_plan': 'hydjson',
-        'geometry': {
-            'bounding_polygon': 'wkt(str)',
-            'altitude_min': 'float',
-            'altitude_max': 'float'
-        }
-        'seismic_catalog': 'quakeml',
+        'bounding_polygon': 'wkt(str)',
+        'depth_min': 'float',
+        'depth_max': 'float'
+        'seismicity_observation': 'quakeml',
         'model_parameters': 'dict'
     }
 ```
@@ -46,7 +44,7 @@ forecast_end: datetime.datetime
 Date and time until when the forecast should be made.
 
 ```
-injection_well: list[dict] # HYDJSON format
+injection_observation: list[dict] # HYDJSON format
 ```
 A list of dictionaries in the HYDJSON format, containing the history of injections into the well.
 
@@ -56,7 +54,7 @@ injection_plan: str | dict # HYDJSON format
 A dictionary in the HYDJSON format, containing the planned injections.
 
 ```
-seismic_catalog: str # QUAKEML format
+seismicity_observation: str # QUAKEML format
 ```
 An XML string in the QUAKEML format, containing the seismic events catalog.
 
@@ -66,12 +64,12 @@ model_parameters: dict
 A dictionary containing the parameters for the model. The keys are the names of the parameters, and the values are the values of the parameters.
 
 ```
-geometry: dict # containing the following keys:
-    bounding_polygon: str # WKT format
-    altitude_min: float
-    altitude_max: float
+
+bounding_polygon: str # WKT format
+depth_min: float
+depth_max: float
 ```
-The geometry of the area of interest. The bounding_polygon is a string in the WKT format, and the altitude_min and altitude_max are m.a.s.l.
+The geometry of the area of interest. The bounding_polygon is a string in the WKT format.
 It is the model's responsibility to discretize the area of interest and to calculate the forecast for each discretized volume.
 
 
@@ -140,7 +138,7 @@ If you would like to have some kind of validation of the input and output of you
 The changes to the entrypoint are minimal:
 
 ```python	
-from ramsis import validate_entrypoint, ModelInput
+from hermes import validate_entrypoint, ModelInput
 
 @validate_entrypoint(induced=True)
 def entrypoint(model_input: ModelInput):
@@ -150,27 +148,27 @@ def entrypoint(model_input: ModelInput):
 
 Note, that you now don't have a dict anymore inside the function, but an object, with the fields of the input format as attributes. The `validate_entrypoint` decorator will validate the input and output of the entrypoint, and raise an error if the input or output is not valid. 
 
-The `induced` parameter is optional, and defaults to `False`. If set to `True` the input fields `injection_well` and `injection_plan` will be validated as well. Note, that if you're using the validation for induced seismicity, you need to install the package with the extra 'hydws' dependency:
+The `induced` parameter is optional, and defaults to `False`. If set to `True` the input fields `injection_observation` and `injection_plan` will be validated as well. Note, that if you're using the validation for induced seismicity, you need to install the package with the extra 'hydws' dependency:
 
 # Installation
 If you want to use the validation features, you can install the package by running the following command:
 
 ```bash
 # basic installation
-pip install git+https://gitlab.seismo.ethz.ch/indu/ramsis-model.git
+pip install git+https://gitlab.seismo.ethz.ch/indu/hermes-model.git
 
 # installation with hydws dependency
-pip install 'ramsis-model[hydws] @ git+https://gitlab.seismo.ethz.ch/indu/ramsis-model.git'
+pip install 'hermes-model[hydws] @ git+https://gitlab.seismo.ethz.ch/indu/hermes-model.git'
 ```
 
 You can reference the dependency in your requirements.txt or setup.cfg file as well:
 
 ```bash
 # basic dependency
-ramsis-model @ git+https://gitlab.seismo.ethz.ch/indu/ramsis-model.git
+hermes-model @ git+https://gitlab.seismo.ethz.ch/indu/hermes-model.git
 
 # dependency with hydws
-ramsis-model[hydws] @ git+https://gitlab.seismo.ethz.ch/indu/ramsis-model.git
+hermes-model[hydws] @ git+https://gitlab.seismo.ethz.ch/indu/hermes-model.git
 ```
 
 ## Dependencies

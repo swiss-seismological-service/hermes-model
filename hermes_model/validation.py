@@ -53,7 +53,7 @@ def validate_entrypoint(_func=None, *, induced=False):
                                      "please use valid hydjson.")
 
             try:
-                Catalog.from_quakeml(model_input.seismic_observation)
+                Catalog.from_quakeml(model_input.seismicity_observation)
             except BaseException:
                 raise ValueError("Invalid format for seismic catalog, "
                                  "please use valid quakeml.")

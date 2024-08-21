@@ -10,7 +10,7 @@ class ModelInput(BaseModel):
     injection_observation: list[dict | None] | None = None
     injection_plan: dict | None = None
 
-    seismicity_observation: str
+    seismicity_observation: str | None = None
 
     bounding_polygon: str | None = None
     depth_min: float | None = None

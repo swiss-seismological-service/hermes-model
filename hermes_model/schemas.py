@@ -19,5 +19,6 @@ class ModelInput(BaseModel):
     model_parameters: dict = {}
 
     model_config = ConfigDict(
-        protected_namespaces=()
+        protected_namespaces=(),
+        extra='forbid',
     )

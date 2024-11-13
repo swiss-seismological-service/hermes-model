@@ -8,7 +8,7 @@ class ModelInput(BaseModel):
     forecast_end: datetime
 
     injection_observation: list[dict | None] | None = None
-    injection_plan: dict | None = None
+    injection_plan: list[dict] | None = None
 
     seismicity_observation: str | None = None
 

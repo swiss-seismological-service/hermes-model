@@ -47,7 +47,8 @@ def validate_entrypoint(_func=None, *, induced=False):
                 try:
                     if model_input.injection_plan is None:
                         raise Exception
-                    BoreholeHydraulics(model_input.injection_plan)
+                    for ip in model_input.injection_plan:
+                        BoreholeHydraulics(ip)
                 except BaseException:
                     raise ValueError("Invalid injection plan, "
                                      "please use valid hydjson.")

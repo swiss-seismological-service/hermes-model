@@ -18,6 +18,8 @@ class ModelInput(BaseModel):
 
     model_parameters: dict = {}
 
+    model_settings: dict | None = None
+
     model_config = ConfigDict(
         protected_namespaces=(),
         extra='forbid',

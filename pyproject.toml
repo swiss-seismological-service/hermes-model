@@ -1,3 +1,29 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools>=70.0.0", "wheel>=0.43.0"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = [""]
+include = ["hermes_model"]
+
+[project]
+name = "hermes-model"
+version = "0.1.0"
+description = "Interface and documentation on how to create an interface to the HERMES software."
+readme = "README.md"
+authors = [{ name = "Nicolas Schmid", email = "nicolas.schmid@sed.ethz.ch" }]
+license = { file = "LICENSE" }
+
+dependencies = [
+    "pydantic",
+    "seismostats @ git+https://github.com/swiss-seismological-service/SeismoStats.git",
+    "shapely",
+]
+
+requires-python = ">=3.12"
+
+
+[project.optional-dependencies]
+hydws = [
+    "hydws-client @ git+https://git@gitlab.seismo.ethz.ch/indu/hydws-client.git",
+]

@@ -75,10 +75,15 @@ def validate_entrypoint(_func=None, *, induced=False):
                     "(Forecast)Catalog or DataFrame.")
 
             if not all(
-                _check_required_cols(r, Catalog._required_cols)
+                _check_required_cols(r, ['longitude', 'latitude', 'depth',
+                                         'time', 'magnitude'])
                 for r in results) \
                 and not all(
-                    _check_required_cols(r, GRRateGrid._required_cols)
+                    _check_required_cols(r, ['longitude_min', 'longitude_max',
+                                             'latitude_min', 'latitude_max',
+                                             'depth_min', 'depth_max',
+                                             'a', 'b', 'mc'
+                                             ])
                     for r in results):
                 raise ValueError("Results are missing required columns.")
 

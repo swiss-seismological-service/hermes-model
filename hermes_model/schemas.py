@@ -18,7 +18,7 @@ class ModelInput(BaseModel):
 
     model_parameters: dict = {}
 
-    model_settings: dict | None = None
+    model_settings: dict = {}
 
     model_config = ConfigDict(
         protected_namespaces=(),

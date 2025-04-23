@@ -11,14 +11,10 @@ name = "hermes-model"
 version = "0.1.0"
 description = "Interface and documentation on how to create an interface to the HERMES software."
 readme = "README.md"
-authors = [{ name = "Nicolas Schmid", email = "nicolas.schmid@sed.ethz.ch" }]
+authors = [{ name = "Nicolas Schmid" }]
 license = { file = "LICENSE" }
 
-dependencies = [
-    "pydantic",
-    "seismostats @ git+https://github.com/swiss-seismological-service/SeismoStats.git",
-    "shapely",
-]
+dependencies = ["pydantic", "seismostats", "shapely"]
 
 requires-python = ">=3.12"
 

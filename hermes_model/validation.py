@@ -41,7 +41,7 @@ def validate_entrypoint(_func=None, *, induced=False):
                             raise Exception
                         BoreholeHydraulics(well)
                 except BaseException:
-                    raise ValueError("Invalid injection well, "
+                    raise ValueError("Invalid injection observation, "
                                      "please use valid hydjson.")
 
                 try:

@@ -25,7 +25,7 @@ jobs:
             - name: Run tests
               run: |
                   flake8
-                  pytest --cov=hermes --cov-report=xml
+                  pytest --cov=hermes_model --cov-report=xml
             - name: Store the codecov report
               uses: actions/upload-artifact@v4
               with:

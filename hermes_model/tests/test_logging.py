@@ -1,8 +1,6 @@
 import logging
 import sys
 import types
-import pytest
-from unittest.mock import patch
 
 from hermes_model.logging import set_up_logging
 

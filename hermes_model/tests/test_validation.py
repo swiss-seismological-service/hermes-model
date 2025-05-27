@@ -1,12 +1,10 @@
-import pytest
-from unittest.mock import patch, MagicMock
-import pandas as pd
-
-import pytest
-import pandas as pd
 from datetime import datetime
+from unittest.mock import patch
+
+import pandas as pd
+import pytest
+
 from hermes_model.validation import validate_entrypoint
-from hermes_model.schemas import ModelInput
 
 
 @validate_entrypoint
@@ -19,21 +17,23 @@ def dummy_forecast(model_input):
         "magnitude": [4.0]
     })]
 
+
 model_input = {
-    'forecast_start':datetime(2020, 1, 1),
-    'forecast_end':datetime(2021, 1, 1),
-    'seismicity_observation':'<dummy_quakeml>',
-    'bounding_polygon':'POLYGON((0 0,1 0,1 1,0 1,0 0))'
+    'forecast_start': datetime(2020, 1, 1),
+    'forecast_end': datetime(2021, 1, 1),
+    'seismicity_observation': '<dummy_quakeml>',
+    'bounding_polygon': 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
 }
 
 model_input_hyd = {
-        'forecast_start':datetime(2020, 1, 1),
-        'forecast_end':datetime(2021, 1, 1),
-        'seismicity_observation':'<dummy_quakeml>',
-        'bounding_polygon':'POLYGON((0 0,1 0,1 1,0 1,0 0))',
-        'injection_observation':[{}],
-        'injection_plan':[{}]
-    }
+    'forecast_start': datetime(2020, 1, 1),
+    'forecast_end': datetime(2021, 1, 1),
+    'seismicity_observation': '<dummy_quakeml>',
+    'bounding_polygon': 'POLYGON((0 0,1 0,1 1,0 1,0 0))',
+    'injection_observation': [{}],
+    'injection_plan': [{}]
+}
+
 
 def test_validate_entrypoint_valid_input():
     with pytest.raises(ValueError, match="Invalid format for seismic catalog"):
@@ -50,7 +50,8 @@ def test_invalid_seismicity_observation():
     from hermes_model import validation
 
     with pytest.raises(ValueError, match="Invalid format for seismic catalog"):
-        with patch.object(validation.Catalog, "from_quakeml", side_effect=Exception):
+        with patch.object(validation.Catalog, "from_quakeml",
+                          side_effect=Exception):
             dummy_forecast(model_input)
 
 
@@ -60,8 +61,9 @@ def test_invalid_result_type():
         return ["not a valid type"]
 
     with patch("hermes_model.validation.Catalog.from_quakeml"), \
-         patch("hermes_model.validation.wkt.loads"), \
-         patch("hermes_model.validation._check_required_cols", return_value=True):
+            patch("hermes_model.validation.wkt.loads"), \
+            patch("hermes_model.validation._check_required_cols",
+                  return_value=True):
 
         with pytest.raises(ValueError, match="Results need to be of type"):
             bad_return_forecast(model_input)
@@ -95,13 +97,15 @@ def test_invalid_injection_observation():
         })]
 
     with patch("hermes_model.validation._hydraulics_available", True), \
-         patch("hermes_model.validation.BoreholeHydraulics"), \
-         patch("hermes_model.validation.Catalog.from_quakeml"), \
-         patch("hermes_model.validation.wkt.loads"), \
-         patch("hermes_model.validation._check_required_cols", return_value=True):
+            patch("hermes_model.validation.BoreholeHydraulics"), \
+            patch("hermes_model.validation.Catalog.from_quakeml"), \
+            patch("hermes_model.validation.wkt.loads"), \
+            patch("hermes_model.validation._check_required_cols",
+                  return_value=True):
 
         with pytest.raises(ValueError, match="Invalid injection observation"):
-            with patch("hermes_model.validation.BoreholeHydraulics", side_effect=Exception("fail")):
+            with patch("hermes_model.validation.BoreholeHydraulics",
+                       side_effect=Exception("fail")):
                 induced_forecast(model_input_hyd)
 
 
@@ -119,15 +123,17 @@ def test_invalid_injection_plan():
     model_input_fail = model_input_hyd.copy()
 
     with patch("hermes_model.validation._hydraulics_available", True), \
-         patch("hermes_model.validation.BoreholeHydraulics"), \
-         patch("hermes_model.validation.Catalog.from_quakeml"), \
-         patch("hermes_model.validation.wkt.loads"), \
-         patch("hermes_model.validation._check_required_cols", return_value=True):
+            patch("hermes_model.validation.BoreholeHydraulics"), \
+            patch("hermes_model.validation.Catalog.from_quakeml"), \
+            patch("hermes_model.validation.wkt.loads"), \
+            patch("hermes_model.validation._check_required_cols",
+                  return_value=True):
 
         model_input_fail['injection_plan'] = None  # Invalid injection plan
 
         with pytest.raises(BaseException, match="Invalid injection plan"):
             induced_forecast(model_input_fail)
+
 
 def test_missing_required_result_columns():
     @validate_entrypoint
@@ -136,11 +142,14 @@ def test_missing_required_result_columns():
         return [pd.DataFrame({"foo": [1], "bar": [2]})]
 
     with patch("hermes_model.validation.Catalog.from_quakeml"), \
-         patch("hermes_model.validation.wkt.loads"), \
-         patch("hermes_model.validation._check_required_cols", return_value=False):  # force fail
+            patch("hermes_model.validation.wkt.loads"), \
+            patch("hermes_model.validation._check_required_cols",
+                  return_value=False):  # force fail
 
-        with pytest.raises(ValueError, match="Results are missing required columns."):
+        with pytest.raises(ValueError,
+                           match="Results are missing required columns."):
             bad_results_forecast(model_input)
+
 
 def test_gr_grid_like_results_valid():
     @validate_entrypoint
@@ -158,8 +167,9 @@ def test_gr_grid_like_results_valid():
         })]
 
     with patch("hermes_model.validation.Catalog.from_quakeml"), \
-         patch("hermes_model.validation.wkt.loads"), \
-         patch("hermes_model.validation._check_required_cols", return_value=True):
+            patch("hermes_model.validation.wkt.loads"), \
+            patch("hermes_model.validation._check_required_cols",
+                  return_value=True):
 
         results = grid_forecast(model_input)
         assert isinstance(results, list)

@@ -1,3 +1,10 @@
+![pypi](https://img.shields.io/pypi/v/hermes-model.svg)
+[![PyPI - License](https://img.shields.io/pypi/l/hermes-model)](https://pypi.org/project/hermes-model/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/hermes-model)](https://pypi.org/project/hermes-model/)
+[![test](https://github.com/swiss-seismological-service/hermes-model/actions/workflows/tests.yml/badge.svg)](https://github.com/swiss-seismological-service/hermes-model/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/github/swiss-seismological-service/hermes-model/graph/badge.svg?token=RVJFHYLBKA)](https://codecov.io/github/swiss-seismological-service/hermes-model)
+
+
 # Getting Started
 
 ## Entrypoint
